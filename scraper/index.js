@@ -9,8 +9,6 @@ const GAME_URI = `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001
 
 // Create a folder named "../train", and two folders inside it named "train" and "test"
 fs.mkdirSync('../train', { recursive: true })
-fs.mkdirSync('../train/train', { recursive: true })
-fs.mkdirSync('../train/test', { recursive: true })
 
 ;(async () => {
   const { data } = await axios.get(GAME_URI)
@@ -51,9 +49,7 @@ fs.mkdirSync('../train/test', { recursive: true })
       continue
     }
 
-    const isTest = trainOrTest()
-    const folder = isTest ? 'test' : 'train'
-    const gameFolder = `../train/${folder}/`
+    const gameFolder = `../train/`
 
     console.log(`Moving ${game.appid} to ${gameFolder}`)
 
@@ -88,15 +84,9 @@ fs.mkdirSync('../train/test', { recursive: true })
 
 function gameAlreadyScraped(appid) {
   // Read the train and test folders
-  const trainFolder = fs.readdirSync('../train/train')
-  const testFolder = fs.readdirSync('../train/test')
+  const trainFolder = fs.readdirSync('../train')
   
-  return trainFolder.some(file => file.startsWith(appid)) || testFolder.some(file => file.startsWith(appid))
-}
-
-function trainOrTest() {
-  // 30% chance to be test, otherwise train
-  return Math.random() < 0.3
+  return trainFolder.some(file => file.startsWith(appid))
 }
 
 function sleep(ms) {
