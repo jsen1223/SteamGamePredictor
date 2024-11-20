@@ -53,7 +53,7 @@ fs.mkdirSync('../train/test', { recursive: true })
 
     const isTest = trainOrTest()
     const folder = isTest ? 'test' : 'train'
-    const gameFolder = `../train/${folder}/${game.appid}-${pct}`
+    const gameFolder = `../train/${folder}/`
 
     console.log(`Moving ${game.appid} to ${gameFolder}`)
 
@@ -65,7 +65,7 @@ fs.mkdirSync('../train/test', { recursive: true })
     for (const image of images || []) {
       const imgUrl = image.path_thumbnail
       const extension = imgUrl.split('.').pop().split('?')[0]
-      const fileName = `${game.appid}-${iCount}.${extension}`
+      const fileName = `${game.appid}-${iCount}-${pct}.${extension}`
       const filePath = `${gameFolder}/${fileName}`
 
       await axios.get(imgUrl, { responseType: 'stream' }).then(response => {
